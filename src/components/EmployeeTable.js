@@ -50,7 +50,7 @@ const EmployeeTable = () => {
                 <img src={employee.photo} alt="E" className="w-10 h-10" />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <Link href={`/attendance?id=${employee.id}`}>
+                <Link href={`/Attendance?id=${employee.id}`}>
                   <p>{employee.name}</p>
                 </Link>
               </td>
