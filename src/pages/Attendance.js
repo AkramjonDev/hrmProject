@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -37,17 +37,25 @@ const calculateAttendanceSummary = (attendance) => {
 const AttendancePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const attendance = useAttendanceData(selectedDate);
+  const [attendanceSummary, setAttendanceSummary] = useState(null);
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      const storedAttendance = localStorage.getItem('attendance');
+      if (storedAttendance) {
+        setAttendanceSummary(calculateAttendanceSummary(JSON.parse(storedAttendance)));
+      }
+    }
+  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const attendanceSummary = calculateAttendanceSummary(attendance);
-
   return (
     <div className="p-8">
       <h1 className="at-title text-3xl font-bold mb-4">Attendance Page</h1>
-      <AttendanceSummary {...attendanceSummary} />
+      {attendanceSummary && <AttendanceSummary {...attendanceSummary} />}
       <div style={{ height: 500 }}>
         <Calendar
           localizer={localizer}
