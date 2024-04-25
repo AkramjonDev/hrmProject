@@ -5,13 +5,22 @@ const EmployeeContext = createContext();
 export const useEmployeeContext = () => useContext(EmployeeContext);
 
 export const EmployeeProvider = ({ children }) => {
-  const [employees, setEmployees] = useState(() => {
-    const storedEmployees = localStorage.getItem('employees');
-    return storedEmployees ? JSON.parse(storedEmployees) : [];
-  });
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('employees', JSON.stringify(employees));
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedEmployees = localStorage.getItem('employees');
+      if (storedEmployees) {
+        setEmployees(JSON.parse(storedEmployees));
+      }
+    }
+  }, []);
+
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('employees', JSON.stringify(employees));
+    }
   }, [employees]);
 
   const addEmployee = (employee) => {
