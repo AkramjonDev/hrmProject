@@ -40,8 +40,8 @@ const AttendancePage = () => {
   const [attendanceSummary, setAttendanceSummary] = useState(null);
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
-      const storedAttendance = localStorage.getItem('attendance');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedAttendance = window.localStorage.getItem('attendance');
       if (storedAttendance) {
         setAttendanceSummary(calculateAttendanceSummary(JSON.parse(storedAttendance)));
       }
